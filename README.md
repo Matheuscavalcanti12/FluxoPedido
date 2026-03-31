@@ -16,6 +16,7 @@ API REST para gerenciamento de pedidos com autenticação JWT e controle de aces
 ## ⚙️ Funcionalidades
 
 * Login com geração de token
+* Senha com Hash
 * Controle de acesso (`admin` / `user`)
 * CRUD de produtos (admin)
 * Criação e gerenciamento de pedidos
