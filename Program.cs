@@ -4,6 +4,5 @@ using Controller;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-
-Rotas.MapearRotas(app);
+app.Usuario();
 app.Run();
