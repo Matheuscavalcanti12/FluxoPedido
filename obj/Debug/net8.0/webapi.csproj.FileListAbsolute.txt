@@ -46,3 +46,4 @@ C:\Users\mathe\OneDrive\Documentos\FluxoPedido\obj\Debug\net8.0\webapi.pdb
 C:\Users\mathe\OneDrive\Documentos\FluxoPedido\obj\Debug\net8.0\webapi.genruntimeconfig.cache
 C:\Users\mathe\OneDrive\Documentos\FluxoPedido\obj\Debug\net8.0\ref\webapi.dll
 C:\Users\mathe\OneDrive\Documentos\FluxoPedido\obj\Debug\net8.0\webapi.sourcelink.json
+C:\Users\mathe\OneDrive\Documentos\FluxoPedido\bin\Debug\net8.0\BCrypt.Net-Next.dll
