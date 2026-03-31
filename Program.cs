@@ -1,12 +1,8 @@
 using MySql.Data.MySqlClient;
-
+using Controller;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/", () =>
-{
-   string message = "Hello, World!";
-   return message;
-}
-);
+
+Rotas.MapearRotas(app);
 app.Run();
