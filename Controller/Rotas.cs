@@ -51,6 +51,7 @@ public static void NovoCadastro(this WebApplication app)
            string sql = "INSERT INTO usuario (email,senha) values (@email,@senha)";
            using var cmd = new MySqlCommand(sql, conn);
            cmd.Parameters.AddWithValue("@email",usuario.Email);
+           
            string senhaHash = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
            cmd.Parameters.AddWithValue("@senha",senhaHash);
 
@@ -102,5 +103,28 @@ public static class Login
                 return Results.Unauthorized();
            }
         });
+    }
+}
+
+//criando endpoint para adicionar produtos
+public static class ProdutoRotas
+{
+   public static void AdicionarProduto(this WebApplication app)
+     {
+        app.MapPost("/produto", (Produto produto) =>
+         { string conexao =  "server=localhost;database=OrderFlow;user=root;password=;";
+           using var conn = new MySqlConnection(conexao);
+           conn.Open();
+
+           string sql = "INSERT INTO produto (desc_produto, valor, imagem) values (@desc_produto, @valor, @imagem)";
+           using var cmd = new MySqlCommand(sql, conn);
+           
+           cmd.Parameters.AddWithValue("@desc_produto",produto.Desc_produto);
+           cmd.Parameters.AddWithValue("@valor",produto.Preco);
+           cmd.Parameters.AddWithValue("@imagem",produto.Imagem);
+
+            return Results.Ok("Produto adicionado com sucesso!");
+    });
+     
     }
 }
