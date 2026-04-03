@@ -145,7 +145,7 @@ public static class Listar{
               using var cmd = new MySqlCommand (query,conn);
               using MySqlDataReader reader = cmd.ExecuteReader();  
 
-              List<ListarProduto> list = new List<ListarProduto>();
+              List<Produto> list = new List<Produto>();
               
                while (reader.Read())
                 {
@@ -154,7 +154,7 @@ public static class Listar{
                        string imagem = reader["imagem"].ToString();
                 
 
-                list.Add( new ListarProduto{
+                list.Add( new Produto{
                  Desc_produto = desc_produto,
                  Preco = valor,
                  Imagem = imagem
