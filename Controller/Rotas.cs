@@ -145,7 +145,7 @@ public static class Listar{
               using var conn = new MySqlConnection (conexao);
               conn.Open();
 
-              string query = "SELECT desc_produto, valor, imagem FROM produto";
+              string query = "SELECT id_produto,desc_produto, valor, imagem FROM produto";
               
               using var cmd = new MySqlCommand (query,conn);
               using MySqlDataReader reader = cmd.ExecuteReader();  
@@ -154,12 +154,14 @@ public static class Listar{
               
                while (reader.Read())
                 {
+                      int id = reader.GetInt32("id_produto");
                        string desc_produto = reader["desc_produto"].ToString();
                        decimal valor = reader.GetDecimal("valor");
                        string imagem = reader["imagem"].ToString();
                 
 
                 list.Add( new Produto{
+                 Id = id,
                  Desc_produto = desc_produto,
                  Preco = valor,
                  Imagem = imagem
@@ -186,7 +188,7 @@ public static class Listar{
             using var conn = new MySqlConnection (conexao);
             conn.Open();
 
-            string query = "SELECT desc_produto,valor,imagem from produto where id= @id";
+            string query = "SELECT id_produto,desc_produto,valor,imagem from produto where id_produto= @id_produto";
             using var cmd = new MySqlCommand(query,conn);
 
             //o banco vai retornar apenas um produto correspondente ao ID do usuário.
@@ -195,7 +197,7 @@ public static class Listar{
             id → valor que você quer usar no lugar desse parâmetro.
             Isso funciona tanto para SELECT quanto para INSERT, UPDATE ou DELETE.
             */
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id_produto", id);
 
             using MySqlDataReader reader = cmd.ExecuteReader();  
 
@@ -205,15 +207,16 @@ public static class Listar{
             if (reader.Read())
             {
                 //o endpoint envia exatamente os dados do produto solicitado.
-                var produto = new ItemProduto
+                var produto = new Produto
                 {
-                     Desc_produto = reader["desc_produto"].ToString(),
+                    Id = reader.GetInt32("id_produto"),
+                    Desc_produto = reader["desc_produto"].ToString(),
                     Preco = reader.GetDecimal("valor"),
                     Imagem = reader["imagem"].ToString()
                 };
                 
                    return Results.Ok(produto); 
-             };
+             }
           return Results.NotFound();
         });
     }
