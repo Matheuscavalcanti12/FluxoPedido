@@ -128,3 +128,88 @@ public static class ProdutoRotas
      
     }
 }
+
+/*endpoint get para listar os produtos gerais(Usuario consegue ver todos os produtos disponiveis
+ou, ao clique do botao Produtos, lista todos os produtos da loja) */
+public static class Listar{
+    public static void ListarProduto(this WebApplication app)
+    {
+        app.MapGet("/listarProdutos", () =>
+        {
+              string conexao  = "server=localhost;database=OrderFlow;user=root;password=;";
+              using var conn = new MySqlConnection (conexao);
+              conn.Open();
+
+              string query = "SELECT desc_produto, valor, imagem FROM produto";
+              
+              using var cmd = new MySqlCommand (query,conn);
+              using MySqlDataReader reader = cmd.ExecuteReader();  
+
+              List<ListarProduto> list = new List<ListarProduto>();
+              
+               while (reader.Read())
+                {
+                       string desc_produto = reader["desc_produto"].ToString();
+                       decimal valor = reader.GetDecimal("valor");
+                       string imagem = reader["imagem"].ToString();
+                
+
+                list.Add( new ListarProduto{
+                 Desc_produto = desc_produto,
+                 Preco = valor,
+                 Imagem = imagem
+
+                 });
+                }
+              return Results.Ok(list); 
+           });
+
+    }
+ }
+
+
+/*endpoint criado para quando o usuario clicar no produto,
+ a pagina abrir aquele produto especifico*/
+
+ public static class Item
+{
+    public static void ItemProduto(this WebApplication app)
+    {
+        app.MapGet("/produto/{id}", (int id) =>
+        {
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
+            using var conn = new MySqlConnection (conexao);
+            conn.Open();
+
+            string query = "SELECT desc_produto,valor,imagem from produto where id= @id";
+            using var cmd = new MySqlCommand(query,conn);
+
+            //o banco vai retornar apenas um produto correspondente ao ID do usuário.
+            /*o banco vai retornar apenas um produto correspondente ao ID do produto.
+            @id → nome do parâmetro na query SQL.
+            id → valor que você quer usar no lugar desse parâmetro.
+            Isso funciona tanto para SELECT quanto para INSERT, UPDATE ou DELETE.
+            */
+            cmd.Parameters.AddWithValue("@id", id);
+
+            using MySqlDataReader reader = cmd.ExecuteReader();  
+
+          
+
+
+            if (reader.Read())
+            {
+                //o endpoint envia exatamente os dados do produto solicitado.
+                var produto = new ItemProduto
+                {
+                     Desc_produto = reader["desc_produto"].ToString(),
+                    Preco = reader.GetDecimal("valor"),
+                    Imagem = reader["imagem"].ToString()
+                };
+                
+                   return Results.Ok(produto); 
+             };
+          return Results.NotFound();
+        });
+    }
+}

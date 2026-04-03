@@ -8,4 +8,6 @@ app.Usuario();
 app.NovoCadastro();
 app.LoginUsuario();
 app.AdicionarProduto();
+app.ListarProduto();
+app.ItemProduto();
 app.Run();
