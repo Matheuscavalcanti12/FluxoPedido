@@ -191,9 +191,9 @@ public static class Listar{
             string query = "SELECT id_produto,desc_produto,valor,imagem from produto where id_produto= @id_produto";
             using var cmd = new MySqlCommand(query,conn);
 
-            //o banco vai retornar apenas um produto correspondente ao ID do usuário.
+            
             /*o banco vai retornar apenas um produto correspondente ao ID do produto.
-            @id → nome do parâmetro na query SQL.
+            @id_produto → nome do parâmetro na query SQL.
             id → valor que você quer usar no lugar desse parâmetro.
             Isso funciona tanto para SELECT quanto para INSERT, UPDATE ou DELETE.
             */
@@ -207,6 +207,10 @@ public static class Listar{
             if (reader.Read())
             {
                 //o endpoint envia exatamente os dados do produto solicitado.
+                //como eu quero que eu veja um produto especifico,
+                //eu crio esse objeto passando todos os dados do produto que o banco me retorna,
+           
+              
                 var produto = new Produto
                 {
                     Id = reader.GetInt32("id_produto"),
@@ -221,3 +225,7 @@ public static class Listar{
         });
     }
 }
+
+
+//endpoint para adicionar produto a um carrinho de compras, pedido
+
