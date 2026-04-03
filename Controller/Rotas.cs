@@ -123,7 +123,12 @@ public static class ProdutoRotas
            cmd.Parameters.AddWithValue("@valor",produto.Preco);
            cmd.Parameters.AddWithValue("@imagem",produto.Imagem);
 
+            int rows = cmd.ExecuteNonQuery();
+            return Results.Ok(rows); 
+
             return Results.Ok("Produto adicionado com sucesso!");
+
+          
     });
      
     }
