@@ -290,3 +290,42 @@ public static class ItensPedido
     }
 }
 
+//endpoint para ver o carrinho do usuario, ou seja, os itens do pedido criado
+
+public static class VerItens
+{
+    public static void VerItensPedido(this WebApplication app)
+    {
+        app.MapGet("/pedido/{id}/itens", (int id) =>
+        {
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
+            using var conn = new MySqlConnection (conexao);
+            conn.Open();
+
+            string sql = "SELECT p.desc_produto, pi.quantidade, p.valor FROM pedido_item pi JOIN produto p ON pi.produto_id = p.id_produto WHERE pi.pedido_id = @pedido_id";
+            using var cmd = new MySqlCommand(sql, conn);
+           
+           
+           cmd.Parameters.AddWithValue("@pedido_id",id);
+
+           using MySqlDataReader reader = cmd.ExecuteReader();  
+
+           List<ItemPedidoDetalhado> itens = new List<ItemPedidoDetalhado>();
+           
+           while (reader.Read())
+           {
+                string desc_produto = reader["desc_produto"].ToString();
+                int quantidade = reader.GetInt32("quantidade");
+                decimal valor = reader.GetDecimal("valor");
+
+                itens.Add(new ItemPedidoDetalhado
+                {
+                    Desc_produto = desc_produto,
+                    Quantidade = quantidade,
+                    Valor = valor
+                });
+           }
+           return Results.Ok(itens); 
+        });
+    }
+}
