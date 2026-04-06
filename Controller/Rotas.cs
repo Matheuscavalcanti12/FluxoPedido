@@ -227,5 +227,29 @@ public static class Listar{
 }
 
 
-//endpoint para adicionar produto a um carrinho de compras, pedido
+//endpoint criando pedido
+
+public static class Pedidos
+{
+    public static void CriarPedido(this WebApplication app)
+    {
+        app.MapPost("/pedido", (Pedido pedido) =>
+        {
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
+            using var conn = new MySqlConnection (conexao);
+            conn.Open();
+
+            string sql = "INSERT INTO pedido (id_usuario) values (@id_usuario)";
+            using var cmd = new MySqlCommand(sql, conn);
+           
+           
+           cmd.Parameters.AddWithValue("@id_usuario",pedido.Id_usuario);
+
+            int rows = cmd.ExecuteNonQuery();
+            return Results.Ok(rows); 
+
+            
+        });
+    }
+}
 

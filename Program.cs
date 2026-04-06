@@ -10,4 +10,5 @@ app.LoginUsuario();
 app.AdicionarProduto();
 app.ListarProduto();
 app.ItemProduto();
+app.CriarPedido();
 app.Run();
