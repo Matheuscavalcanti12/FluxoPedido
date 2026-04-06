@@ -209,7 +209,9 @@ public static class Listar{
                 //o endpoint envia exatamente os dados do produto solicitado.
                 //como eu quero que eu veja um produto especifico,
                 //eu crio esse objeto passando todos os dados do produto que o banco me retorna
-                
+                  /*Logica:
+                Se quer buscar um unico item para ve-lo, voce tem que faze-lo
+                um objeto, com os dados que estao na tabela do banco*/
            
               
                 var produto = new Produto
