@@ -272,12 +272,12 @@ public static class ItensPedido
             using var conn = new MySqlConnection (conexao);
             conn.Open();
 
-            string sql = "INSERT INTO item_pedido (id_pedido, id_produto, quantidade) values (@id_pedido, @id_produto, @quantidade)";
+            string sql = "INSERT INTO pedido_item (pedido_id,produto_id, quantidade) values (@pedido_id, @produto_id, @quantidade)";
             using var cmd = new MySqlCommand(sql, conn);
            
            
-           cmd.Parameters.AddWithValue("@id_pedido",item.Id_pedido);
-           cmd.Parameters.AddWithValue("@id_produto",item.Id_produto);
+           cmd.Parameters.AddWithValue("@pedido_id",item.Id_pedido);
+           cmd.Parameters.AddWithValue("@produto_id",item.Id_produto);
            cmd.Parameters.AddWithValue("@quantidade",item.Quantidade);
 
             int rows = cmd.ExecuteNonQuery();
