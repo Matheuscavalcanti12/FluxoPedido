@@ -208,7 +208,8 @@ public static class Listar{
             {
                 //o endpoint envia exatamente os dados do produto solicitado.
                 //como eu quero que eu veja um produto especifico,
-                //eu crio esse objeto passando todos os dados do produto que o banco me retorna,
+                //eu crio esse objeto passando todos os dados do produto que o banco me retorna
+                
            
               
                 var produto = new Produto
@@ -235,6 +236,12 @@ public static class Pedidos
     {
         app.MapPost("/pedido", (Pedido pedido) =>
         {
+
+            /*endpoint criado para criar pedido do usuario
+               o usuario recebe uma Foreign Key do id na tabela pedido
+               essa FK é o id do usuario que fez o pedido, ou seja,
+               o pedido tem um id_usuario que referencia o id do usuario na tabela usuario.
+            */
             string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
             conn.Open();
@@ -244,6 +251,34 @@ public static class Pedidos
            
            
            cmd.Parameters.AddWithValue("@id_usuario",pedido.Id_usuario);
+
+            int rows = cmd.ExecuteNonQuery();
+            return Results.Ok(rows); 
+
+            
+        });
+    }
+}
+
+//endpoint para adicionar itens ao pedid(Adicionar ao carrinho)
+
+public static class ItensPedido
+{
+    public static void AdicionarItemPedido(this WebApplication app)
+    {
+        app.MapPost("/pedido/item", (ItemPedido item) =>
+        {
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
+            using var conn = new MySqlConnection (conexao);
+            conn.Open();
+
+            string sql = "INSERT INTO item_pedido (id_pedido, id_produto, quantidade) values (@id_pedido, @id_produto, @quantidade)";
+            using var cmd = new MySqlCommand(sql, conn);
+           
+           
+           cmd.Parameters.AddWithValue("@id_pedido",item.Id_pedido);
+           cmd.Parameters.AddWithValue("@id_produto",item.Id_produto);
+           cmd.Parameters.AddWithValue("@quantidade",item.Quantidade);
 
             int rows = cmd.ExecuteNonQuery();
             return Results.Ok(rows); 
