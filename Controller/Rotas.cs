@@ -357,3 +357,29 @@ public static class AtualizarQuantidade
         });
     }
 }
+
+//endpoint para remover um item do carrinho
+public static class RemoverItem
+{
+    public static void RemoverItemPedido(this WebApplication app)
+    {
+        app.MapDelete("/pedido/item", (ItemPedido item) =>
+        {
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
+            using var conn = new MySqlConnection (conexao);
+            conn.Open();
+
+            string sql = "DELETE FROM pedido_item WHERE pedido_id = @pedido_id AND produto_id = @produto_id";
+            using var cmd = new MySqlCommand(sql, conn);
+           
+           
+           cmd.Parameters.AddWithValue("@pedido_id",item.Id_pedido);
+           cmd.Parameters.AddWithValue("@produto_id",item.Id_produto);
+
+            int rows = cmd.ExecuteNonQuery();
+            return Results.Ok(rows); 
+
+            
+        });
+    }
+}
