@@ -329,3 +329,31 @@ public static class VerItens
         });
     }
 }
+
+//endpoint para atualizar a quantidade de um item no carrinho
+
+public static class AtualizarQuantidade
+{
+    public static void AtualizarQuantidadeItem(this WebApplication app)
+    {
+        app.MapPut("/pedido/item", (ItemPedido item) =>
+        {
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
+            using var conn = new MySqlConnection (conexao);
+            conn.Open();
+
+            string sql = "UPDATE pedido_item SET quantidade = @quantidade WHERE pedido_id = @pedido_id AND produto_id = @produto_id";
+            using var cmd = new MySqlCommand(sql, conn);
+           
+           
+           cmd.Parameters.AddWithValue("@pedido_id",item.Id_pedido);
+           cmd.Parameters.AddWithValue("@produto_id",item.Id_produto);
+           cmd.Parameters.AddWithValue("@quantidade",item.Quantidade);
+
+            int rows = cmd.ExecuteNonQuery();
+            return Results.Ok(rows); 
+
+            
+        });
+    }
+}
