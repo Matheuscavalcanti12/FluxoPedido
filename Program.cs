@@ -13,4 +13,6 @@ app.ItemProduto();
 app.CriarPedido();
 app.AdicionarItemPedido();
 app.VerItensPedido();
+app.AtualizarQuantidadeItem();
+app.RemoverItemPedido();
 app.Run();
