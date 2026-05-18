@@ -1,7 +1,46 @@
 using MySql.Data.MySqlClient;
 using Controller;
+using JWT;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//converte jwt em bytes 
+//Aqui é autenticação do token para o sistema, onde é necessário uma chave secreta
+// para validar o token, e as regras de validação do token, como o emissor, o público,
+// a validade e a chave de assinatura.
+var key = Encoding.UTF8.GetBytes("minha_chave_super_secreta_3112_123456789123456789");
+//fala pro sistema o tipo de autenticação
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        //permite que o uso da rota sem https
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        //regras de validação 
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = "meuSistema",
+            ValidAudience = "meuSistema",
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
+
+
+
+
+
+
+
+
+
+
+
+
 var app = builder.Build();
 
 app.Usuario();
