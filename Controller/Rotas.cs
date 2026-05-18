@@ -102,6 +102,22 @@ public static class Login
            {
                 return Results.Unauthorized();
            }
+            Console.WriteLine("Entrou no login válido");
+
+            string role = reader["role"]?.ToString() ?? "user";
+
+            try
+            {
+               var tokenService = new JWT.TokenService();
+               var token = tokenService.GerarToken(loginRequest.email, role);
+
+               return Results.Ok(new { token = token });
+            }
+            catch (Exception ex)
+            {
+               Console.WriteLine("ERRO JWT: " + ex.Message);
+               return Results.Problem("Erro ao gerar token");
+            }
         });
     }
 }
