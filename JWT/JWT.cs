@@ -1,5 +1,6 @@
 namespace JWT;
 
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -14,8 +15,8 @@ public class JWT
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name,email)
-            new Claim(ClaimTypes.Role, role)
+            new Claim(ClaimTypes.Name, email),
+            new Claim(ClaimTypes.Role, role),
         };
 
         var token = new JwtSecurityToken(

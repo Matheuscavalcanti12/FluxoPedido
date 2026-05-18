@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mathe\\OneDrive\\Documentos\\FluxoPedido\\webapi.csproj": {}
+    "C:\\Users\\matheus.cavalcanti\\Desktop\\FluxoPedidoVS\\FluxoPedido\\webapi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mathe\\OneDrive\\Documentos\\FluxoPedido\\webapi.csproj": {
+    "C:\\Users\\matheus.cavalcanti\\Desktop\\FluxoPedidoVS\\FluxoPedido\\webapi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mathe\\OneDrive\\Documentos\\FluxoPedido\\webapi.csproj",
+        "projectUniqueName": "C:\\Users\\matheus.cavalcanti\\Desktop\\FluxoPedidoVS\\FluxoPedido\\webapi.csproj",
         "projectName": "webapi",
-        "projectPath": "C:\\Users\\mathe\\OneDrive\\Documentos\\FluxoPedido\\webapi.csproj",
-        "packagesPath": "C:\\Users\\mathe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mathe\\OneDrive\\Documentos\\FluxoPedido\\obj\\",
+        "projectPath": "C:\\Users\\matheus.cavalcanti\\Desktop\\FluxoPedidoVS\\FluxoPedido\\webapi.csproj",
+        "packagesPath": "C:\\Users\\matheus.cavalcanti\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\matheus.cavalcanti\\Desktop\\FluxoPedidoVS\\FluxoPedido\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\mathe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\matheus.cavalcanti\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -54,6 +54,10 @@
             "MySql.Data": {
               "target": "Package",
               "version": "[9.6.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -75,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.419/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.421/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

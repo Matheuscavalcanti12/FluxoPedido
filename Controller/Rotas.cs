@@ -1,10 +1,14 @@
 namespace Controller;
 
-using System.Runtime.CompilerServices;
+using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using MySql.Data.MySqlClient;
+using JWT;
 public static class Rotas
 {
-    public static void  Usuario(this WebApplication app)
+    public static void Usuario(this WebApplication app)
     {
         app.MapGet("/usuario", () =>
         {
@@ -14,28 +18,24 @@ public static class Rotas
 
            string sql = "SELECT * FROM usuario";
            using var cmd = new MySqlCommand(sql, conn);
-           using MySqlDataReader reader = cmd.ExecuteReader();  
+           using MySqlDataReader reader = cmd.ExecuteReader();
 
            List<Usuario> usuarios = new List<Usuario>();
            while (reader.Read())
            {
                 int id = reader.GetInt32("id");
                 string email = reader["email"]?.ToString();
-                
-
 
                 usuarios.Add(new Usuario
                 {
                     Id = id,
                     Email = email,
-                   
                 });
            }
            return Results.Ok(usuarios);
-        }
-        );
+        });
+    }
 }
-};
 
 
 //endpoint para criar cadastro
@@ -81,43 +81,31 @@ public static class Login
                
            using MySqlDataReader reader = cmd.ExecuteReader();  
            
-           if(reader.Read())
+           if (!reader.Read())
            {
-               string? senhaHash = reader["senha"]?.ToString();
+               return Results.Unauthorized();
+           }
 
-             if (string.IsNullOrEmpty(senhaHash))
+           string? senhaHash = reader["senha"]?.ToString();
+           if (string.IsNullOrEmpty(senhaHash))
                return Results.Unauthorized();
 
-              bool senhaValida = BCrypt.Net.BCrypt.Verify(usuario.Senha, senhaHash);
-               if(senhaValida)
-               {
-                    return Results.Ok("Login bem-sucedido!");
-               }
-               else
-               {
-                    return Results.Unauthorized();
-               }
-           }
-           else
+           bool senhaValida = BCrypt.Net.BCrypt.Verify(usuario.Senha, senhaHash);
+           if (!senhaValida)
+               return Results.Unauthorized();
+
+           string role = reader["role"]?.ToString() ?? "user";
+
+           try
            {
-                return Results.Unauthorized();
+               var token = JWT.GenerateToken(usuario.Email, role);
+               return Results.Ok(new { token });
            }
-            Console.WriteLine("Entrou no login válido");
-
-            string role = reader["role"]?.ToString() ?? "user";
-
-            try
-            {
-               var tokenService = new JWT.TokenService();
-               var token = tokenService.GerarToken(loginRequest.email, role);
-
-               return Results.Ok(new { token = token });
-            }
-            catch (Exception ex)
-            {
+           catch (Exception ex)
+           {
                Console.WriteLine("ERRO JWT: " + ex.Message);
                return Results.Problem("Erro ao gerar token");
-            }
+           }
         });
     }
 }
@@ -140,9 +128,7 @@ public static class ProdutoRotas
            cmd.Parameters.AddWithValue("@imagem",produto.Imagem);
 
             int rows = cmd.ExecuteNonQuery();
-            return Results.Ok(rows); 
-
-            return Results.Ok("Produto adicionado com sucesso!");
+                        return Results.Ok(rows);
 
           
     });
