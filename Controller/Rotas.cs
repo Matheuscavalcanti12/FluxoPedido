@@ -77,7 +77,7 @@ public static class Login
            string sql = "SELECT * FROM usuario WHERE email = @email";
            using var cmd = new MySqlCommand(sql, conn);
            cmd.Parameters.AddWithValue("@email",usuario.Email);
-          
+          //
                
            using MySqlDataReader reader = cmd.ExecuteReader();  
            
