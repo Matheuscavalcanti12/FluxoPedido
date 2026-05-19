@@ -14,4 +14,21 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Include source files that remain outside ProjectFiles -->
+    <Compile Include="..\Controller\**\*.cs" />
+    <Compile Include="..\Models\**\*.cs" />
+    <Compile Include="..\JWT\**\*.cs" />
+    <Compile Include="..\Db\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

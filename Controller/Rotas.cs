@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using JWT;
 public static class Rotas
@@ -238,7 +239,7 @@ public static class Pedidos
 {
     public static void CriarPedido(this WebApplication app)
     {
-        app.MapPost("/pedido", (Pedido pedido) =>
+        app.MapPost("/pedido", ([FromBody] Pedido pedido) =>
         {
 
             /*endpoint criado para criar pedido do usuario
@@ -270,7 +271,7 @@ public static class ItensPedido
 {
     public static void AdicionarItemPedido(this WebApplication app)
     {
-        app.MapPost("/pedido/item", (ItemPedido item) =>
+        app.MapPost("/pedido/item", ([FromBody] ItemPedido item) =>
         {
             string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
@@ -338,7 +339,7 @@ public static class AtualizarQuantidade
 {
     public static void AtualizarQuantidadeItem(this WebApplication app)
     {
-        app.MapPut("/pedido/item", (ItemPedido item) =>
+        app.MapPut("/pedido/item", ([FromBody] ItemPedido item) =>
         {
             string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
@@ -365,7 +366,7 @@ public static class RemoverItem
 {
     public static void RemoverItemPedido(this WebApplication app)
     {
-        app.MapDelete("/pedido/item", (ItemPedido item) =>
+        app.MapDelete("/pedido/item", ([FromBody] ItemPedido item) =>
         {
             string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
