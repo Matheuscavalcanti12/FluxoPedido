@@ -3,6 +3,7 @@ create database OrderFlow;
 use OrderFlow;
 
 /*Tabelas = usuario,produto,pedido,pedido_item*/
+/*Se o MySql estiver com senha, as strings de conexão devem incluir a senha*/
 
 create table usuario(id int primary key auto_increment not null,
 email varchar(150),
