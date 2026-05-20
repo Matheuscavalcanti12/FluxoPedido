@@ -9,7 +9,7 @@ API REST para gerenciamento de pedidos com autenticação JWT e controle de aces
 * .NET (ASP.NET Core)
 * MySQL
 * JWT (Auth)
-*Typescript  
+* Typescript  
 
 ---
 
