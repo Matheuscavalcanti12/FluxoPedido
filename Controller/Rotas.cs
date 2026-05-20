@@ -13,7 +13,7 @@ public static class Rotas
     {
         app.MapGet("/usuario", () =>
         {
-           string conexao =  "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+           string conexao =  "server=localhost;database=OrderFlow;user=root;password=;";
            using var conn = new MySqlConnection(conexao);
            conn.Open();
 
@@ -45,7 +45,7 @@ public static void NovoCadastro(this WebApplication app)
 {
     app.MapPost("/cadastro", (Usuario usuario) =>
     {
-           string conexao =  "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+           string conexao =  "server=localhost;database=OrderFlow;user=root;password=;";
            using var conn = new MySqlConnection(conexao);
            conn.Open();
 
@@ -87,7 +87,7 @@ public static class Login
     {
         app.MapPost("/login", (Usuario usuario) =>
         {
-           string conexao =  "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+           string conexao =  "server=localhost;database=OrderFlow;user=root;password=;";
            using var conn = new MySqlConnection(conexao);
            conn.Open();
 
@@ -134,7 +134,7 @@ public static class ProdutoRotas
    public static void AdicionarProduto(this WebApplication app)
      {
         app.MapPost("/produto", (Produto produto) =>
-         { string conexao =  "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+         { string conexao =  "server=localhost;database=OrderFlow;user=root;password=;";
            using var conn = new MySqlConnection(conexao);
            conn.Open();
 
@@ -161,7 +161,7 @@ public static class Listar{
     {
         app.MapGet("/listarProdutos", () =>
         {
-              string conexao  = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+              string conexao  = "server=localhost;database=OrderFlow;user=root;password=;";
               using var conn = new MySqlConnection (conexao);
               conn.Open();
 
@@ -204,7 +204,7 @@ public static class Listar{
     {
         app.MapGet("/produto/{id}", (int id) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
             conn.Open();
 
@@ -264,7 +264,7 @@ public static class Pedidos
                essa FK é o id do usuario que fez o pedido, ou seja,
                o pedido tem um id_usuario que referencia o id do usuario na tabela usuario.
             */
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
             conn.Open();
 
@@ -275,7 +275,8 @@ public static class Pedidos
            cmd.Parameters.AddWithValue("@id_usuario",pedido.Id_usuario);
 
             int rows = cmd.ExecuteNonQuery();
-            return Results.Ok(rows); 
+            long pedidoId = cmd.LastInsertedId;
+            return Results.Ok(new { pedidoId }); 
 
             
         });
@@ -290,7 +291,7 @@ public static class ItensPedido
     {
         app.MapPost("/pedido/item", ([FromBody] ItemPedido item) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
             conn.Open();
 
@@ -318,7 +319,7 @@ public static class VerItens
     {
         app.MapGet("/pedido/{id}/itens", (int id) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
             conn.Open();
 
@@ -358,7 +359,7 @@ public static class AtualizarQuantidade
     {
         app.MapPut("/pedido/item", ([FromBody] ItemPedido item) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
             conn.Open();
 
@@ -385,7 +386,7 @@ public static class RemoverItem
     {
         app.MapDelete("/pedido/item", ([FromBody] ItemPedido item) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
+            string conexao = "server=localhost;database=OrderFlow;user=root;password=;";
             using var conn = new MySqlConnection (conexao);
             conn.Open();
 
