@@ -1,6 +1,6 @@
 # 🚀 OrderFlow API
 
-API REST para gerenciamento de pedidos com autenticação JWT e controle de acesso por roles. Senha com Hash, projeto full stack  em C#, mySql, .Net, Tsx
+API REST para gerenciamento de pedidos com autenticação JWT e controle de acesso por roles. Senha com Hash, projeto EDUCATIVO full stack  em C#, mySql, .Net, Tsx
 
 ---
 
@@ -51,15 +51,18 @@ Exemplo:
 
 ```bash
 git clone <repo>
-dotnet run
+git clone <repo Site_Lavanda>
+rode primeiro dotnet run para iniciar o back end
+depois rode o projeto Site_Lavanda com npm run dev para subir o projeto
 ```
 
 ---
 
 ## 🎯 Objetivo
 
-Prática de:
+Projeto educativo. Prática de:
 
 * autenticação e autorização
 * modelagem relacional
 * construção de API REST
+* Criação de Full stack 
