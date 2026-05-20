@@ -1,15 +1,15 @@
 # 🚀 OrderFlow API
 
-API REST para gerenciamento de pedidos com autenticação JWT e controle de acesso por roles.
+API REST para gerenciamento de pedidos com autenticação JWT e controle de acesso por roles. Senha com Hash, projeto full stack  em C#, mySql, .Net, Tsx
 
 ---
 
-## 🧠 Stack
+## 🧠 Projeto FullStack
 
 * .NET (ASP.NET Core)
 * MySQL
 * JWT (Auth)
-* HTML + JS (client simples)
+*Typescript  
 
 ---
 
