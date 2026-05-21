@@ -6,9 +6,10 @@ API REST para gerenciamento de pedidos com autenticação JWT e controle de aces
 
 ## 🧠 Projeto FullStack
 
-* .NET (ASP.NET Core)
+* .NET (ASP.NET Core) - C#
 * MySQL
 * JWT (Auth)
+* Hash
 * Typescript  
 
 ---
