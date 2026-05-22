@@ -35,16 +35,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddPolicy("CorsPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:8080")
+        policy.WithOrigins("http://localhost:8080",
+        "http://192.168.130.46:8080",
+        "http://192.168.56.1:8080",
+        "http://172.21.80.1:8080"
+        
+        )
               .AllowAnyHeader()
               .AllowAnyMethod();
+        
     });
 });
 
 var app = builder.Build();
-app.UseCors("AllowFrontend");
+app.UseCors("CorsPolicy");
 
 app.Usuario();
 app.NovoCadastro();
