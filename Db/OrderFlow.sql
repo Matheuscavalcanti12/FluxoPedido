@@ -63,3 +63,7 @@ INSERT INTO pedido (id_pedido)
 VALUES (4);
 
 select * from pedido;
+select * from usuario;
+select * from produto;
+
+Alter table produto add column marca varchar (200);
