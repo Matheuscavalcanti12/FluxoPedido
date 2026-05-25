@@ -13,7 +13,8 @@ role varchar(50));
 create table produto(id_produto int primary key auto_increment  not null,
 desc_produto varchar(200),
 valor decimal(10,2),
-imagem varchar(200)
+imagem varchar(200),
+marca varchar(200)
 );
 
 create table pedido(id_pedido int primary key auto_increment not null,
