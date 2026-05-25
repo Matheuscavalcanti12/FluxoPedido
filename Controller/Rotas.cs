@@ -138,12 +138,13 @@ public static class ProdutoRotas
            using var conn = new MySqlConnection(conexao);
            conn.Open();
 
-           string sql = "INSERT INTO produto (desc_produto, valor, imagem) values (@desc_produto, @valor, @imagem)";
+           string sql = "INSERT INTO produto (desc_produto, valor, imagem, marca) values (@desc_produto, @valor, @imagem, @marca)";
            using var cmd = new MySqlCommand(sql, conn);
            
            cmd.Parameters.AddWithValue("@desc_produto",produto.Desc_produto);
            cmd.Parameters.AddWithValue("@valor",produto.Preco);
            cmd.Parameters.AddWithValue("@imagem",produto.Imagem);
+           cmd.Parameters.AddWithValue("@marca",produto.Marca);
 
             int rows = cmd.ExecuteNonQuery();
                         return Results.Ok(rows);
