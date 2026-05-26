@@ -166,7 +166,7 @@ public static class Listar{
               using var conn = new MySqlConnection (conexao);
               conn.Open();
 
-              string query = "SELECT id_produto,desc_produto, valor, imagem FROM produto";
+              string query = "SELECT id_produto,desc_produto, valor, imagem, marca FROM produto";
               
               using var cmd = new MySqlCommand (query,conn);
               using MySqlDataReader reader = cmd.ExecuteReader();  
@@ -179,13 +179,14 @@ public static class Listar{
                        string desc_produto = reader["desc_produto"].ToString();
                        decimal valor = reader.GetDecimal("valor");
                        string imagem = reader["imagem"].ToString();
-                
+                       string marca = reader["marca"].ToString();
 
                 list.Add( new Produto{
                  Id = id,
                  Desc_produto = desc_produto,
                  Preco = valor,
-                 Imagem = imagem
+                 Imagem = imagem,
+                 Marca = marca
 
                  });
                 }
