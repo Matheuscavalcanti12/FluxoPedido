@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
+
 //converte jwt em bytes 
 //Aqui é autenticação do token para o sistema, onde é necessário uma chave secreta
 // para validar o token, e as regras de validação do token, como o emissor, o público,
@@ -37,21 +39,20 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:8080",
-        "http://192.168.130.46:8080",
-        "http://192.168.56.1:8080",
-        "http://172.21.80.1:8080",
-        "http://192.168.3.178:8080"
-        
-        )
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
-        
     });
 });
 
 var app = builder.Build();
 app.UseCors("CorsPolicy");
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Usuario();
 app.NovoCadastro();
@@ -65,4 +66,5 @@ app.VerItensPedido();
 app.AtualizarQuantidadeItem();
 app.RemoverItemPedido();
 app.DeletarProduto();
+app.MapFallbackToFile("index.html");
 app.Run();
