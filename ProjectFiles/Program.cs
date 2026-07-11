@@ -1,13 +1,20 @@
 using MySql.Data.MySqlClient;
 using Controller;
 using System.Text;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "DataProtectionKeys")));
 
 //converte jwt em bytes 
 //Aqui é autenticação do token para o sistema, onde é necessário uma chave secreta
@@ -44,12 +51,9 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
-
+builder.Services.AddAuthorization();
 var app = builder.Build();
 app.UseCors("CorsPolicy");
-
-app.UseDefaultFiles();
-app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -66,5 +70,5 @@ app.VerItensPedido();
 app.AtualizarQuantidadeItem();
 app.RemoverItemPedido();
 app.DeletarProduto();
-app.MapFallbackToFile("index.html");
+
 app.Run();

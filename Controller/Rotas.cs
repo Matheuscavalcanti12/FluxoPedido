@@ -13,9 +13,7 @@ public static class Rotas
     {
         app.MapGet("/usuario", () =>
         {
-           string conexao =  "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-           using var conn = new MySqlConnection(conexao);
-           conn.Open();
+           using var conn = Banco.AbrirConexao(app);
 
            string sql = "SELECT * FROM usuario";
            using var cmd = new MySqlCommand(sql, conn);
@@ -45,9 +43,7 @@ public static void NovoCadastro(this WebApplication app)
 {
     app.MapPost("/cadastro", (Usuario usuario) =>
     {
-           string conexao =  "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-           using var conn = new MySqlConnection(conexao);
-           conn.Open();
+           using var conn = Banco.AbrirConexao(app);
 
            string sql = "INSERT INTO usuario (email,senha) values (@email,@senha)";
            using var cmd = new MySqlCommand(sql, conn);
@@ -87,9 +83,7 @@ public static class Login
     {
         app.MapPost("/login", (Usuario usuario) =>
         {
-           string conexao =  "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-           using var conn = new MySqlConnection(conexao);
-           conn.Open();
+           using var conn = Banco.AbrirConexao(app);
 
            string sql = "SELECT * FROM usuario WHERE email = @email";
            using var cmd = new MySqlCommand(sql, conn);
@@ -134,9 +128,8 @@ public static class ProdutoRotas
    public static void AdicionarProduto(this WebApplication app)
      {
         app.MapPost("/produto", (Produto produto) =>
-         { string conexao =  "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-           using var conn = new MySqlConnection(conexao);
-           conn.Open();
+         {
+           using var conn = Banco.AbrirConexao(app);
 
            string sql = "INSERT INTO produto (desc_produto, valor, imagem, marca) values (@desc_produto, @valor, @imagem, @marca)";
            using var cmd = new MySqlCommand(sql, conn);
@@ -162,9 +155,7 @@ public static class Listar{
     {
         app.MapGet("/listarProdutos", () =>
         {
-              string conexao  = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-              using var conn = new MySqlConnection (conexao);
-              conn.Open();
+              using var conn = Banco.AbrirConexao(app);
 
               string query = "SELECT id_produto,desc_produto, valor, imagem, marca FROM produto";
               
@@ -206,9 +197,7 @@ public static class Listar{
     {
         app.MapGet("/produto/{id}", (int id) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-            using var conn = new MySqlConnection (conexao);
-            conn.Open();
+            using var conn = Banco.AbrirConexao(app);
 
             string query = "SELECT id_produto,desc_produto,valor,imagem from produto where id_produto= @id_produto";
             using var cmd = new MySqlCommand(query,conn);
@@ -266,9 +255,7 @@ public static class Pedidos
                essa FK é o id do usuario que fez o pedido, ou seja,
                o pedido tem um id_usuario que referencia o id do usuario na tabela usuario.
             */
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-            using var conn = new MySqlConnection (conexao);
-            conn.Open();
+            using var conn = Banco.AbrirConexao(app);
 
             string sql = "INSERT INTO pedido (id_usuario) values (@id_usuario)";
             using var cmd = new MySqlCommand(sql, conn);
@@ -293,9 +280,7 @@ public static class ItensPedido
     {
         app.MapPost("/pedido/item", ([FromBody] ItemPedido item) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-            using var conn = new MySqlConnection (conexao);
-            conn.Open();
+            using var conn = Banco.AbrirConexao(app);
 
             string sql = "INSERT INTO pedido_item (pedido_id,produto_id, quantidade) values (@pedido_id, @produto_id, @quantidade)";
             using var cmd = new MySqlCommand(sql, conn);
@@ -321,9 +306,7 @@ public static class VerItens
     {
         app.MapGet("/pedido/{id}/itens", (int id) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-            using var conn = new MySqlConnection (conexao);
-            conn.Open();
+            using var conn = Banco.AbrirConexao(app);
 
             string sql = "SELECT p.desc_produto, pi.quantidade, p.valor FROM pedido_item pi JOIN produto p ON pi.produto_id = p.id_produto WHERE pi.pedido_id = @pedido_id";
             using var cmd = new MySqlCommand(sql, conn);
@@ -361,9 +344,7 @@ public static class AtualizarQuantidade
     {
         app.MapPut("/pedido/item", ([FromBody] ItemPedido item) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-            using var conn = new MySqlConnection (conexao);
-            conn.Open();
+            using var conn = Banco.AbrirConexao(app);
 
             string sql = "UPDATE pedido_item SET quantidade = @quantidade WHERE pedido_id = @pedido_id AND produto_id = @produto_id";
             using var cmd = new MySqlCommand(sql, conn);
@@ -388,9 +369,7 @@ public static class RemoverItem
     {
         app.MapDelete("/pedido/item", ([FromBody] ItemPedido item) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-            using var conn = new MySqlConnection (conexao);
-            conn.Open();
+            using var conn = Banco.AbrirConexao(app);
 
             string sql = "DELETE FROM pedido_item WHERE pedido_id = @pedido_id AND produto_id = @produto_id";
             using var cmd = new MySqlCommand(sql, conn);
@@ -413,20 +392,56 @@ public static class DeletarProdutoBanco
     {
         app.MapDelete("/produto/{id}", (int id) =>
         {
-            string conexao = "server=localhost;database=OrderFlow;user=root;password=31122309Mc.";
-            using var conn = new MySqlConnection (conexao);
-            conn.Open();
+            using var conn = Banco.AbrirConexao(app);
+            using var transaction = conn.BeginTransaction();
 
-            string sql = "DELETE FROM produto WHERE id_produto = @id_produto";
-            using var cmd = new MySqlCommand(sql, conn);
-           
-           
-           cmd.Parameters.AddWithValue("@id_produto", id);
+            try
+            {
+                string deleteItensSql = "DELETE FROM pedido_item WHERE produto_id = @id_produto";
+                using var deleteItensCmd = new MySqlCommand(deleteItensSql, conn, transaction);
+                deleteItensCmd.Parameters.AddWithValue("@id_produto", id);
+                deleteItensCmd.ExecuteNonQuery();
 
-            int rows = cmd.ExecuteNonQuery();
-            return Results.Ok(rows); 
+                string deleteProdutoSql = "DELETE FROM produto WHERE id_produto = @id_produto";
+                using var deleteProdutoCmd = new MySqlCommand(deleteProdutoSql, conn, transaction);
+                deleteProdutoCmd.Parameters.AddWithValue("@id_produto", id);
 
-            
+                int rows = deleteProdutoCmd.ExecuteNonQuery();
+
+                if (rows == 0)
+                {
+                    transaction.Rollback();
+                    return Results.NotFound(new { message = "Produto nao encontrado" });
+                }
+
+                transaction.Commit();
+                return Results.Ok(new { message = "Produto excluido com sucesso" });
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Console.WriteLine("Erro ao excluir produto: " + ex.Message);
+                return Results.Problem("Erro ao excluir produto");
+            }
         });
+    }
+}
+
+public static class Banco
+{
+    public static MySqlConnection AbrirConexao(WebApplication app)
+    {
+        string? conexao =
+            Environment.GetEnvironmentVariable("ORDERFLOW_CONNECTION_STRING") ??
+            app.Configuration.GetConnectionString("DefaultConnection");
+
+        if (string.IsNullOrWhiteSpace(conexao))
+        {
+            throw new InvalidOperationException("Configure a ConnectionStrings:DefaultConnection no appsettings.json.");
+        }
+
+        var conn = new MySqlConnection(conexao);
+        conn.Open();
+        return conn;
     }
 }
